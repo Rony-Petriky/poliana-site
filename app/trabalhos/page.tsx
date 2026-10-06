@@ -1,4 +1,7 @@
+'use client';
 import Link from "next/link";
+import { useState } from "react";
+import Image from 'next/image';
 
 const trabalhos = [
   {
@@ -45,15 +48,15 @@ const trabalhos = [
   },
 ];
 
-const categorias = [
-  "Todos",
-  "Publicidade",
-  "Eventos",
-  "Beleza",
-  "Lifestyle",
-];
+const categorias = ["Todos", "Publicidade", "Eventos", "Beleza", "Lifestyle"];
 
 export default function TrabalhosPage() {
+  const [categoriaAtiva, setCategoriaAtiva] = useState("Todos");
+  const trabalhosFiltrados =
+    categoriaAtiva === "Todos"
+      ? trabalhos
+      : trabalhos.filter((trabalho) => trabalho.categoria === categoriaAtiva);
+
   return (
     <main className="min-h-screen bg-[#FFF9F5] text-[#292929]">
       {/* Hero */}
@@ -77,63 +80,81 @@ export default function TrabalhosPage() {
           </div>
         </div>
       </section>
-
       {/* Categorias */}
+
       <section className="px-5 pb-10 sm:px-8 lg:px-12">
-        <div className="mx-auto flex max-w-7xl gap-3 overflow-x-auto pb-2">
-          {categorias.map((categoria, index) => (
-            <button
-              key={categoria}
-              className={`whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-medium transition ${
-                index === 0
-                  ? "bg-[#292929] text-white"
-                  : "border border-[#E9DCD4] bg-white text-[#666] hover:border-[#FF914C] hover:text-[#FF914C]"
-              }`}
-            >
-              {categoria}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Galeria */}
-      <section className="px-5 pb-20 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl">
-          <div className="grid auto-rows-[220px] grid-cols-2 gap-4 md:auto-rows-[260px] md:grid-cols-4">
-            {trabalhos.map((trabalho) => (
-              <article
-                key={trabalho.id}
-                className={`group relative overflow-hidden rounded-[1.5rem] bg-[#F2DDD0] ${
-                  trabalho.destaque
-                    ? "row-span-2 md:col-span-2"
-                    : "row-span-1"
-                }`}
-              >
-                <img
-                  src={trabalho.imagem}
-                  alt={trabalho.titulo}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                />
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
-
-                {/* Informações */}
-                <div className="absolute bottom-0 left-0 right-0 translate-y-3 p-5 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FFB17E]">
-                    {trabalho.categoria}
-                  </span>
-
-                  <h2 className="mt-1 text-lg font-bold">
-                    {trabalho.titulo}
-                  </h2>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {" "}
+            {categorias.map((categoria) => {
+              const ativa = categoriaAtiva === categoria;
+              return (
+                <button
+                  key={categoria}
+                  onClick={() => setCategoriaAtiva(categoria)}
+                  className={`whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-medium transition ${ativa ? "bg-[#292929] text-white" : "border border-[#E9DCD4] bg-white text-[#666] hover:border-[#FF914C] hover:text-[#FF914C]"}`}
+                >
+                  {" "}
+                  {categoria}{" "}
+                </button>
+              );
+            })}{" "}
+          </div>{" "}
+        </div>{" "}
+      </section>{" "}
+      {/* Galeria */}{" "}
+      <section className="px-5 pb-20 sm:px-8 lg:px-12">
+        {" "}
+        <div className="mx-auto max-w-7xl">
+          {" "}
+          {trabalhosFiltrados.length > 0 ? (
+            <div className="grid auto-rows-[220px] grid-cols-2 gap-4 md:auto-rows-[260px] md:grid-cols-4">
+              {" "}
+              {trabalhosFiltrados.map((trabalho) => (
+                <article
+                  key={trabalho.id}
+                  className={`group relative overflow-hidden rounded-[1.5rem] bg-[#F2DDD0] ${trabalho.destaque ? "row-span-2 md:col-span-2" : "row-span-1"}`}
+                >
+                  {" "}
+                  <Image
+                    src={trabalho.imagem}
+                    alt={trabalho.titulo}
+                    fill
+                    style={{ objectFit: "cover" }}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />{" "}
+                  {/* Overlay */}{" "}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />{" "}
+                  {/* Informações */}{" "}
+                  <div className="absolute bottom-0 left-0 right-0 translate-y-3 p-5 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    {" "}
+                    <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FFB17E]">
+                      {" "}
+                      {trabalho.categoria}{" "}
+                    </span>{" "}
+                    <h2 className="mt-1 text-lg font-bold">
+                      {" "}
+                      {trabalho.titulo}{" "}
+                    </h2>{" "}
+                  </div>{" "}
+                </article>
+              ))}{" "}
+            </div>
+          ) : (
+            <div className="rounded-[2rem] bg-white px-6 py-20 text-center">
+              {" "}
+              <h2 className="text-2xl font-bold">
+                {" "}
+                Nenhum trabalho encontrado{" "}
+              </h2>{" "}
+              <p className="mt-3 text-[#777]">
+                {" "}
+                Ainda não existem trabalhos cadastrados nessa categoria.{" "}
+              </p>{" "}
+            </div>
+          )}{" "}
+        </div>{" "}
       </section>
-
       {/* Sobre os trabalhos */}
       <section className="bg-white px-5 py-20 sm:px-8 lg:px-12">
         <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-2 md:items-center">
@@ -157,13 +178,11 @@ export default function TrabalhosPage() {
 
             <p className="mt-5 leading-8 text-[#666]">
               Cada projeto é pensado de acordo com a proposta da marca, o
-              formato do conteúdo e a melhor maneira de conversar com o
-              público.
+              formato do conteúdo e a melhor maneira de conversar com o público.
             </p>
           </div>
         </div>
       </section>
-
       {/* Tipos de trabalho */}
       <section className="px-5 py-20 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl">
@@ -188,8 +207,7 @@ export default function TrabalhosPage() {
               {
                 numero: "02",
                 titulo: "Stories",
-                texto:
-                  "Conteúdos rápidos, espontâneos e próximos do público.",
+                texto: "Conteúdos rápidos, espontâneos e próximos do público.",
               },
               {
                 numero: "03",
@@ -234,7 +252,6 @@ export default function TrabalhosPage() {
           </div>
         </div>
       </section>
-
       {/* CTA */}
       <section className="px-5 pb-20 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[#292929] px-6 py-14 text-center text-white sm:px-10">
