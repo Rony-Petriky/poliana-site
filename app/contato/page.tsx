@@ -20,11 +20,51 @@ export default function ContatoPage() {
   const whatsappLink =
     "https://wa.me/556598009777?text=Ol%C3%A1%20Poliana!%20Gostaria%20de%20falar%20sobre%20uma%20poss%C3%ADvel%20parceria.";
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setEnviado(true);
-  }
+async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
 
+  const form = event.currentTarget;
+  const formData = new FormData(form);
+
+  const dados = {
+    nome: formData.get("nome"),
+    empresa: formData.get("empresa"),
+    email: formData.get("email"),
+    telefone: formData.get("whatsapp"),
+    instagram: formData.get("instagram"),
+    tipo: formData.get("tipo"),
+    plano: formData.get("plano"),
+    orcamento: formData.get("orcamento"),
+    mensagem: formData.get("mensagem"),
+  };
+
+  try {
+    const resposta = await fetch("/api/contato", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dados),
+    });
+
+    const resultado = await resposta.json();
+
+    if (!resposta.ok || !resultado.sucesso) {
+      throw new Error(
+        resultado.erro || "Erro ao enviar formulário"
+      );
+    }
+
+    form.reset();
+    setEnviado(true);
+  } catch (erro) {
+    console.error("Erro:", erro);
+
+    alert(
+      "Não foi possível enviar sua mensagem. Tente novamente."
+    );
+  }
+}
   return (
     <main className="min-h-screen overflow-hidden bg-[#FFF9F5] text-[#292929]">
       {/* Hero */}
