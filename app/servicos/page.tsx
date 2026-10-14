@@ -262,7 +262,7 @@ export default function ServicosPage() {
                       : "text-[#999]"
                   }`}
                 >
-                  A partir de
+                  
                 </span>
 
                 <motion.div
@@ -273,11 +273,11 @@ export default function ServicosPage() {
                   }}
                 >
                   <span className="text-sm">
-                    R$
+                   
                   </span>{" "}
 
                   <span className="text-3xl font-bold">
-                    {plano.price}
+                  
                   </span>
                 </motion.div>
 
