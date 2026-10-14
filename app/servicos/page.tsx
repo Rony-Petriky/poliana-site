@@ -11,7 +11,7 @@ const planos = [
       "Para marcas que querem começar a criar presença e conexão nas redes.",
     destaque: false,
     itens: ["Stories 2 vezes por mês"],
-    price: 200,
+    price: 0,
   },
   {
     nome: "Plus",
@@ -19,7 +19,7 @@ const planos = [
       "Uma parceria mais completa para aumentar a presença da sua marca.",
     destaque: false,
     itens: ["Stories 2 vezes por mês", "1 reels por trimestre"],
-    price: 250,
+    price: 0,
   },
   {
     nome: "Premium",
@@ -27,7 +27,7 @@ const planos = [
       "Para campanhas que precisam de mais presença e variedade de conteúdo.",
     destaque: true,
     itens: ["Stories 4 vezes por mês"],
-    price: 300,
+    price: 0,
   },
   {
     nome: "Master",
@@ -35,7 +35,7 @@ const planos = [
       "Uma parceria completa para marcas que querem construir uma campanha especial.",
     destaque: false,
     itens: ["Stories 2 vezes por mês", "1 reels por trimestre"],
-    price: 350,
+    price: 0,
   },
 ];
 
