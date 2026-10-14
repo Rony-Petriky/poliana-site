@@ -1,109 +1,226 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { fadeUp, fadeLeft, fadeRight, cardAnimation } from "@/types/animations";
 
+type Trabalho = {
+  id: number;
+  titulo: string;
+  categoria: string;
+  tipo: "imagem" | "video" | "instagram";
+  imagem: string; // foto, ou capa (thumbnail) do vídeo
+  video?: string; // para tipo "video" (ex.: /videos/trabalho-1.mp4)
+  instagram?: string; // para tipo "instagram": link do post/reel
+  destaque: boolean;
+};
 
-const trabalhos = [
-  {
+const trabalhos: Trabalho[] = [
+
+{
     id: 1,
-    titulo: "Campanha de marca",
-    categoria: "Publicidade",
-    imagem: "/images/trabalho-1.jpg",
+    titulo: "Explorando Denise",
+    categoria: "Explorando Denise",
+    tipo: "instagram",
+    imagem: "/images/capas/explorando.png",
+    instagram: "https://www.instagram.com/p/DdFWlgTxC4X/",
     destaque: true,
   },
   {
     id: 2,
-    titulo: "Produção de conteúdo",
-    categoria: "Lifestyle",
-    imagem: "/images/trabalho-2.jpg",
+    titulo: "Dona margarida",
+    categoria: "Explorando Denise",
+    tipo: "instagram",
+    imagem: "/images/capas/margarida.png",
+    instagram: "https://www.instagram.com/p/Dd43M3LRycr/",
     destaque: false,
   },
-  {
+    {
     id: 3,
-    titulo: "Evento especial",
-    categoria: "Eventos",
-    imagem: "/images/trabalho-3.jpg",
+    titulo: "Afradim",
+    categoria: "Explorando Denise",
+    tipo: "instagram",
+    imagem: "/images/capas/afradim.png",
+    instagram: "https://www.instagram.com/p/DdGu8oShL9K/",
     destaque: false,
   },
+
+  /* publicidade */
   {
     id: 4,
-    titulo: "Campanha de beleza",
-    categoria: "Beleza",
-    imagem: "/images/trabalho-4.jpg",
-    destaque: true,
-  },
-  {
-    id: 5,
-    titulo: "Conteúdo para marca",
+    titulo: "trailer",
     categoria: "Publicidade",
-    imagem: "/images/trabalho-5.jpg",
+    tipo: "instagram",
+    imagem: "/images/capas/trailer.png",
+    instagram: "https://www.instagram.com/p/DdM6L2IRHbs/",
+    destaque: false,
+  },
+    {
+    id: 5,
+    titulo: "Studio saith",
+    categoria: "Publicidade",
+    tipo: "instagram",
+    imagem: "/images/capas/studio saith.png",
+    instagram: "https://www.instagram.com/p/DdeTQjXx_ZQ/",
     destaque: false,
   },
   {
     id: 6,
-    titulo: "Experiência",
-    categoria: "Lifestyle",
-    imagem: "/images/trabalho-6.jpg",
+    titulo: "Farmacia economize",
+    categoria: "Publicidade",
+    tipo: "instagram",
+    imagem: "/images/capas/farmacia economize.png",
+    instagram: "https://www.instagram.com/p/DdMQh8YBVj4/",
+    destaque: true,
+  },
+  {
+    id: 7,
+    titulo: "loja Gabriela",
+    categoria: "Publicidade",
+    tipo: "instagram",
+    imagem: "/images/capas/loja gabriela.png",
+    instagram: "https://www.instagram.com/p/DRVHByDidW0/",
     destaque: false,
   },
+
+    /* eventos */
+  {
+    id: 8,
+    titulo: "EXpoden dia 01",
+    categoria: "Eventos",
+    tipo: "instagram",
+    imagem: "/images/capas/expoden01.png",
+    instagram: "https://www.instagram.com/p/DbLYWA9R1MH/",
+    destaque: true,
+  },
+    {
+    id: 9,
+    titulo: "EXpoden dia 02",
+    categoria: "Eventos",
+    tipo: "instagram",
+    imagem: "/images/capas/expoden02.png",
+    instagram: "https://www.instagram.com/p/DbODEMBRfQq/",
+    destaque: false,
+  },
+      {
+    id: 10,
+    titulo: "oque elas estaão usando",
+    categoria: "Eventos",
+    tipo: "instagram",
+    imagem: "/images/capas/oqueelasestao.png",
+    instagram: "https://www.instagram.com/p/DbOjVDPRl2t/",
+    destaque: false,
+  },
+    {
+    id: 11,
+    titulo: "EXpoden dia 03",
+    categoria: "Eventos",
+    tipo: "instagram",
+    imagem: "/images/capas/expoden03.png",
+    instagram: "https://www.instagram.com/p/DbROrAixy1V/",
+    destaque: false,
+  },
+  
+  {
+    id: 12,
+    titulo: "EXpoden dia 03",
+    categoria: "Eventos",
+    tipo: "instagram",
+    imagem: "/images/capas/oqueelas02.png",
+    instagram: "https://www.instagram.com/p/DbRaSTcxLUN/",
+    destaque: false,
+  },
+
+    /* Lifestyle */
+    {
+    id: 13,
+    titulo: "Arrume se comigo 01",
+    categoria: "Lifestyle",
+    tipo: "instagram",
+    imagem: "/images/capas/arrumase01.png",
+    instagram: "https://www.instagram.com/p/DbKDLDhxiUG/",
+    destaque: true,
+  },
+    {
+    id: 14,
+    titulo: "Arrume se comigo 02",
+    categoria: "Lifestyle",
+    tipo: "instagram",
+    imagem: "/images/capas/arrumase02.png",
+    instagram: "https://www.instagram.com/p/DbMoCaixVQO/",
+    destaque: false,
+  },
+  {
+    id: 15,
+    titulo: "Arrume se comigo 03",
+    categoria: "Lifestyle",
+    tipo: "instagram",
+    imagem: "/images/capas/arrumase03.png",
+    instagram: "https://www.instagram.com/p/DbPU8BexEd1/",
+    destaque: false,
+  },
+    {
+    id: 16,
+    titulo: "Delicia de padaria",
+    categoria: "Lifestyle",
+    tipo: "instagram",
+    imagem: "/images/capas/delicia de padaria.png",
+    instagram: "https://www.instagram.com/p/DaRAI_5RcSp/",
+    destaque: false,
+  },
+  
 ];
 
-const categorias = [
-  "Todos",
-  "Publicidade",
-  "Eventos",
-  "Beleza",
-  "Lifestyle",
-];
+const categorias = ["Todos", "Publicidade", "Eventos", "Explorando Denise", "Lifestyle"];
 
-
+// Transforma o link do post/reel no link de embed do Instagram
+function urlEmbedInstagram(link: string) {
+  const limpo = link.split("?")[0].replace(/\/$/, "");
+  return `${limpo}/embed`;
+}
 
 export default function TrabalhosPage() {
   const [categoriaAtiva, setCategoriaAtiva] = useState("Todos");
+  const [itemAberto, setItemAberto] = useState<Trabalho | null>(null);
 
   const trabalhosFiltrados =
     categoriaAtiva === "Todos"
       ? trabalhos
-      : trabalhos.filter(
-          (trabalho) => trabalho.categoria === categoriaAtiva
-        );
+      : trabalhos.filter((trabalho) => trabalho.categoria === categoriaAtiva);
+
+  // Fecha o modal com ESC e trava a rolagem da página enquanto está aberto
+  useEffect(() => {
+    if (!itemAberto) return;
+
+    const aoApertarTecla = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setItemAberto(null);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", aoApertarTecla);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", aoApertarTecla);
+    };
+  }, [itemAberto]);
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#FFF9F5] text-[#292929]">
-
-      {/* =========================================================
-          HERO
-      ========================================================= */}
+      {/* HERO */}
       <section className="relative px-5 pb-14 pt-28 sm:px-8 lg:px-12">
-        {/* Decoração */}
         <motion.div
           className="absolute -right-20 top-24 h-56 w-56 rounded-full bg-[#FF914C]/10"
-          animate={{
-            y: [0, -18, 0],
-            x: [0, 8, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ y: [0, -18, 0], x: [0, 8, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <motion.div
           className="absolute -left-16 bottom-0 h-36 w-36 rounded-full bg-[#FF914C]/10"
-          animate={{
-            y: [0, 15, 0],
-            rotate: [0, 8, 0],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ y: [0, 15, 0], rotate: [0, 8, 0] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <div className="relative mx-auto max-w-7xl">
@@ -156,9 +273,7 @@ export default function TrabalhosPage() {
         </div>
       </section>
 
-      {/* =========================================================
-          CATEGORIAS
-      ========================================================= */}
+      {/* CATEGORIAS */}
       <section className="px-5 pb-10 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl">
           <motion.div
@@ -168,25 +283,16 @@ export default function TrabalhosPage() {
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6 }}
           >
-            {categorias.map((categoria, index) => {
+            {categorias.map((categoria) => {
               const ativa = categoriaAtiva === categoria;
 
               return (
                 <motion.button
                   key={categoria}
                   onClick={() => setCategoriaAtiva(categoria)}
-                  whileHover={{
-                    y: -3,
-                    scale: 1.03,
-                  }}
-                  whileTap={{
-                    scale: 0.95,
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 20,
-                  }}
+                  whileHover={{ y: -3, scale: 1.03 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
                   className={`relative whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-medium transition ${
                     ativa
                       ? "bg-[#292929] text-white"
@@ -197,17 +303,11 @@ export default function TrabalhosPage() {
                     <motion.span
                       layoutId="categoriaAtiva"
                       className="absolute inset-0 -z-0 rounded-full bg-[#292929]"
-                      transition={{
-                        type: "spring",
-                        stiffness: 500,
-                        damping: 35,
-                      }}
+                      transition={{ type: "spring", stiffness: 500, damping: 35 }}
                     />
                   )}
 
-                  <span className="relative z-10">
-                    {categoria}
-                  </span>
+                  <span className="relative z-10">{categoria}</span>
                 </motion.button>
               );
             })}
@@ -215,12 +315,9 @@ export default function TrabalhosPage() {
         </div>
       </section>
 
-      {/* =========================================================
-          GALERIA
-      ========================================================= */}
+      {/* GALERIA */}
       <section className="px-5 pb-20 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl">
-
           {trabalhosFiltrados.length > 0 ? (
             <motion.div
               layout
@@ -231,6 +328,7 @@ export default function TrabalhosPage() {
                   <motion.article
                     layout
                     key={trabalho.id}
+                    onClick={() => setItemAberto(trabalho)}
                     variants={cardAnimation}
                     initial="hidden"
                     animate="visible"
@@ -238,36 +336,24 @@ export default function TrabalhosPage() {
                       opacity: 0,
                       scale: 0.85,
                       y: 20,
-                      transition: {
-                        duration: 0.25,
-                      },
+                      transition: { duration: 0.25 },
                     }}
                     transition={{
-                      layout: {
-                        duration: 0.5,
-                        ease: [0.22, 1, 0.36, 1],
-                      },
+                      layout: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
                       delay: index * 0.08,
                     }}
-                    whileHover={{
-                      y: -6,
-                    }}
-                    className={`group relative overflow-hidden rounded-[1.5rem] bg-[#F2DDD0] shadow-sm ${
+                    whileHover={{ y: -6 }}
+                    className={`group relative cursor-pointer overflow-hidden rounded-[1.5rem] bg-[#F2DDD0] shadow-sm ${
                       trabalho.destaque
                         ? "row-span-2 md:col-span-2"
                         : "row-span-1"
                     }`}
                   >
-                    {/* Imagem */}
+                    {/* Imagem / capa do vídeo */}
                     <motion.div
                       className="absolute inset-0"
-                      whileHover={{
-                        scale: 1.06,
-                      }}
-                      transition={{
-                        duration: 0.7,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
+                      whileHover={{ scale: 1.06 }}
+                      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <Image
                         src={trabalho.imagem}
@@ -281,6 +367,22 @@ export default function TrabalhosPage() {
                         className="object-cover"
                       />
                     </motion.div>
+
+                    {/* Ícone de play (vídeo e Instagram) */}
+                    {(trabalho.tipo === "video" ||
+                      trabalho.tipo === "instagram") && (
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-lg transition group-hover:scale-110">
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="ml-1 h-6 w-6 fill-[#FF914C]"
+                            aria-hidden="true"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Overlay */}
                     <motion.div
@@ -301,22 +403,11 @@ export default function TrabalhosPage() {
                     {/* Informações */}
                     <motion.div
                       className="absolute bottom-0 left-0 right-0 p-5 text-white"
-                      initial={{
-                        opacity: 0,
-                        y: 20,
-                      }}
-                      whileHover={{
-                        opacity: 1,
-                        y: 0,
-                      }}
-                      transition={{
-                        duration: 0.35,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileHover={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     >
-                      <motion.span
-                        className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FFB17E]"
-                      >
+                      <motion.span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FFB17E]">
                         {trabalho.categoria}
                       </motion.span>
 
@@ -328,17 +419,9 @@ export default function TrabalhosPage() {
                     {/* Número */}
                     <motion.span
                       className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-xs font-bold text-[#292929]"
-                      initial={{
-                        opacity: 0,
-                        scale: 0.5,
-                      }}
-                      whileHover={{
-                        opacity: 1,
-                        scale: 1,
-                      }}
-                      transition={{
-                        duration: 0.25,
-                      }}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      whileHover={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.25 }}
                     >
                       0{trabalho.id}
                     </motion.span>
@@ -353,14 +436,8 @@ export default function TrabalhosPage() {
               className="rounded-[2rem] bg-white px-6 py-20 text-center"
             >
               <motion.div
-                animate={{
-                  y: [0, -8, 0],
-                }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                 className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#FFF1E8] text-xl"
               >
                 !
@@ -378,21 +455,12 @@ export default function TrabalhosPage() {
         </div>
       </section>
 
-      {/* =========================================================
-          SOBRE OS TRABALHOS
-      ========================================================= */}
+      {/* SOBRE OS TRABALHOS */}
       <section className="relative overflow-hidden bg-white px-5 py-20 sm:px-8 lg:px-12">
         <motion.div
           className="absolute -right-20 top-10 h-48 w-48 rounded-full bg-[#FF914C]/10"
-          animate={{
-            y: [0, 20, 0],
-            rotate: [0, 10, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ y: [0, 20, 0], rotate: [0, 10, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <div className="relative mx-auto grid max-w-6xl gap-10 md:grid-cols-2 md:items-center">
@@ -426,15 +494,14 @@ export default function TrabalhosPage() {
 
             <p className="mt-5 leading-8 text-[#666]">
               Cada projeto é pensado de acordo com a proposta da marca, o
-              formato do conteúdo e a melhor maneira de conversar com o público.
+              formato do conteúdo e a melhor maneira de conversar com o
+              público.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* =========================================================
-          TIPOS DE TRABALHO
-      ========================================================= */}
+      {/* TIPOS DE TRABALHO */}
       <section className="px-5 py-20 sm:px-8 lg:px-12">
         <div className="mx-auto max-w-7xl">
           <motion.div
@@ -457,17 +524,10 @@ export default function TrabalhosPage() {
             className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
             initial="hidden"
             whileInView="visible"
-            viewport={{
-              once: true,
-              amount: 0.15,
-            }}
+            viewport={{ once: true, amount: 0.15 }}
             variants={{
               hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: 0.1,
-                },
-              },
+              visible: { transition: { staggerChildren: 0.1 } },
             }}
           >
             {[
@@ -480,8 +540,7 @@ export default function TrabalhosPage() {
               {
                 numero: "02",
                 titulo: "Stories",
-                texto:
-                  "Conteúdos rápidos, espontâneos e próximos do público.",
+                texto: "Conteúdos rápidos, espontâneos e próximos do público.",
               },
               {
                 numero: "03",
@@ -498,8 +557,7 @@ export default function TrabalhosPage() {
               {
                 numero: "05",
                 titulo: "Campanhas",
-                texto:
-                  "Projetos completos desenvolvidos em parceria com marcas.",
+                texto: "Projetos completos desenvolvidos em parceria com marcas.",
               },
               {
                 numero: "06",
@@ -516,26 +574,17 @@ export default function TrabalhosPage() {
                   scale: 1.02,
                   boxShadow: "0 20px 45px rgba(41, 41, 41, 0.10)",
                 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 20,
-                }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className="group rounded-[1.5rem] border border-[#EDE0D9] bg-white p-7"
               >
                 <motion.span
                   className="inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-[#FFF1E8] px-3 text-sm font-bold text-[#FF914C]"
-                  whileHover={{
-                    scale: 1.15,
-                    rotate: 5,
-                  }}
+                  whileHover={{ scale: 1.15, rotate: 5 }}
                 >
                   {item.numero}
                 </motion.span>
 
-                <h3 className="mt-6 text-xl font-bold">
-                  {item.titulo}
-                </h3>
+                <h3 className="mt-6 text-xl font-bold">{item.titulo}</h3>
 
                 <p className="mt-3 text-sm leading-6 text-[#777]">
                   {item.texto}
@@ -543,15 +592,9 @@ export default function TrabalhosPage() {
 
                 <motion.div
                   className="mt-5 h-1 rounded-full bg-[#FF914C]"
-                  initial={{
-                    width: "20%",
-                  }}
-                  whileHover={{
-                    width: "45%",
-                  }}
-                  transition={{
-                    duration: 0.3,
-                  }}
+                  initial={{ width: "20%" }}
+                  whileHover={{ width: "45%" }}
+                  transition={{ duration: 0.3 }}
                 />
               </motion.div>
             ))}
@@ -559,56 +602,25 @@ export default function TrabalhosPage() {
         </div>
       </section>
 
-      {/* =========================================================
-          CTA
-      ========================================================= */}
+      {/* CTA */}
       <section className="px-5 pb-20 sm:px-8 lg:px-12">
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 50,
-            scale: 0.97,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.3,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          initial={{ opacity: 0, y: 50, scale: 0.97 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[#292929] px-6 py-14 text-center text-white sm:px-10"
         >
-          {/* Elementos decorativos */}
           <motion.div
             className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#FF914C]/20"
-            animate={{
-              y: [0, 15, 0],
-              x: [0, -10, 0],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            animate={{ y: [0, 15, 0], x: [0, -10, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           />
 
           <motion.div
             className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-white/5"
-            animate={{
-              y: [0, -12, 0],
-              rotate: [0, -8, 0],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            animate={{ y: [0, -12, 0], rotate: [0, -8, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
 
           <div className="relative z-10">
@@ -654,12 +666,8 @@ export default function TrabalhosPage() {
                 className="mt-8 inline-flex rounded-full bg-[#FF914C] px-7 py-3.5 font-semibold text-white transition hover:bg-[#e87935]"
               >
                 <motion.span
-                  whileHover={{
-                    scale: 1.04,
-                  }}
-                  whileTap={{
-                    scale: 0.96,
-                  }}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                 >
                   Entrar em contato
                 </motion.span>
@@ -668,6 +676,79 @@ export default function TrabalhosPage() {
           </div>
         </motion.div>
       </section>
+
+      {/* MODAL (foto, vídeo ou Instagram) */}
+      <AnimatePresence>
+        {itemAberto && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setItemAberto(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={itemAberto.titulo}
+          >
+            <motion.div
+              className="relative w-full max-w-4xl"
+              initial={{ scale: 0.9, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 30 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Fechar */}
+              <button
+                onClick={() => setItemAberto(null)}
+                aria-label="Fechar"
+                className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-xl text-[#292929] transition hover:bg-[#FF914C] hover:text-white"
+              >
+                ✕
+              </button>
+
+              <div className="overflow-hidden rounded-[1.5rem] bg-black">
+                {itemAberto.tipo === "video" && itemAberto.video ? (
+                  <video
+                    src={itemAberto.video}
+                    poster={itemAberto.imagem}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="max-h-[80vh] w-full object-contain"
+                  />
+                ) : itemAberto.tipo === "instagram" && itemAberto.instagram ? (
+                  <iframe
+                    src={urlEmbedInstagram(itemAberto.instagram)}
+                    title={itemAberto.titulo}
+                    className="mx-auto block h-[80vh] w-full max-w-[420px] bg-white"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="relative h-[80vh] w-full">
+                    <Image
+                      src={itemAberto.imagem}
+                      alt={itemAberto.titulo}
+                      fill
+                      sizes="100vw"
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-4 text-white">
+                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FFB17E]">
+                  {itemAberto.categoria}
+                </span>
+                <h3 className="mt-1 text-xl font-bold">{itemAberto.titulo}</h3>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
